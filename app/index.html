@@ -3,23 +3,79 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
+<title>Leonida Legend — GTA VI Trophy Tracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
+
+<header class="masthead">
+  <div class="brand">
+    <h1>Leonida <span class="brand-amber">Legend</span></h1>
+    <p class="tagline">Grand Theft Auto VI · PlayStation 5 · 55 trophies · offline</p>
+  </div>
+  <div class="progress-block">
+    <p class="percent"><span id="percent">0</span><small>%</small></p>
+    <p id="progress-label" class="progress-label">0 of 55 earned</p>
+    <div class="bar" role="progressbar" aria-label="Trophy progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="bar-fill" id="bar-fill"></div>
+    </div>
+  </div>
 </header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
+
+<section class="banner" id="missable-banner" aria-label="Missable trophy warning">
+  <p><strong>Missable — Positive Mental Attitude.</strong> The meditation strand opens its first spots during Chapter&nbsp;1, and once the story moves past that chapter some spots are gone for good on that save. Meditate at every marker as its area opens, or the platinum is dead for this playthrough.</p>
+</section>
+
+<section class="stats" aria-label="Trophies earned by grade">
+  <div class="stat" data-grade="platinum"><span class="medallion platinum">P</span><span class="stat-count" id="count-platinum">0</span><span class="stat-label">Platinum</span></div>
+  <div class="stat" data-grade="gold"><span class="medallion gold">G</span><span class="stat-count" id="count-gold">0</span><span class="stat-label">Gold</span></div>
+  <div class="stat" data-grade="silver"><span class="medallion silver">S</span><span class="stat-count" id="count-silver">0</span><span class="stat-label">Silver</span></div>
+  <div class="stat" data-grade="bronze"><span class="medallion bronze">B</span><span class="stat-count" id="count-bronze">0</span><span class="stat-label">Bronze</span></div>
+</section>
+
+<section class="roadmap" aria-label="Platinum roadmap">
+  <h2 class="section-title">Road to the platinum</h2>
+  <ol class="phases" id="phases"></ol>
+</section>
+
+<section class="controls" aria-label="Filters and progress tools">
+  <input id="search" type="search" placeholder="Search name, description or guide…" aria-label="Search trophies">
+  <select id="category" aria-label="Category">
+    <option value="all">All categories</option>
+    <option value="story">Story</option>
+    <option value="strangers">Strangers</option>
+    <option value="robberies">Robberies</option>
+    <option value="grinds">Grinds</option>
+    <option value="100">100%</option>
+  </select>
+  <select id="grade" aria-label="Grade">
+    <option value="all">All grades</option>
+    <option value="platinum">Platinum</option>
+    <option value="gold">Gold</option>
+    <option value="silver">Silver</option>
+    <option value="bronze">Bronze</option>
+  </select>
+  <label class="toggle"><input type="checkbox" id="hide-earned"> Hide earned</label>
+  <label class="toggle"><input type="checkbox" id="spoilers"> Spoilers</label>
+  <button id="reset" type="button">Reset</button>
+  <button id="export" type="button">Export</button>
+  <label class="toggle import">Import<input id="import" type="file" accept="application/json" aria-label="Import progress file"></label>
+</section>
+
+<main>
+  <table class="ledger">
+    <thead>
+      <tr><th class="col-check">Done</th><th class="col-grade">Grade</th><th class="col-body">Trophy</th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="empty" id="empty" hidden>No trophies match the current filters.</p>
+</main>
+
+<footer class="foot">
+  <p>Progress is saved in this browser under the key <code>llprog</code>. Fan-made tracker; not affiliated with Rockstar Games.</p>
+</footer>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>
