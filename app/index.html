@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Leonida Legend Roadmap</title>
+<style>
+:root{--bg:#0d1521;--panel:#131f31;--card:#182840;--ink:#e8eef7;--dim:#8fa3bd;--acc:#ffb020;--pl:#e8eef7;--gold:#ffd24a;--silver:#c9d4e2;--bronze:#d08a4e;--line:#24344d;--ok:#2ecc8f;--miss:#ff5d5d}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:18px}
+header{display:flex;align-items:center;gap:14px;padding:16px 0 10px;border-bottom:2px solid var(--acc)}
+header h1{font-size:26px;letter-spacing:.5px}
+header .count{margin-left:auto;text-align:right}
+.big{font-size:30px;font-weight:700;color:var(--acc)}
+.sub{color:var(--dim);font-size:12px}
+.bar{height:8px;background:var(--card);border-radius:4px;margin:10px 0 16px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#ffb020,#ffd24a);width:0%}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.controls input[type=text]{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:8px}
+.controls button,.controls select{background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px}
+.controls button.on{background:var(--acc);color:#1a1205;border-color:var(--acc);font-weight:700}
+.controls button.warn{border-color:var(--miss);color:var(--miss)}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--dim)}
+.stat b{color:var(--ink);font-size:16px}
+.roadmap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+.phase{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px}
+.phase h3{font-size:13px;color:var(--acc);margin-bottom:4px}
+.phase p{font-size:12px;color:var(--dim)}
+.missbanner{background:#2a1620;border:1px solid var(--miss);border-radius:8px;padding:10px 14px;color:#ffb3b3;font-size:13px;margin:12px 0}
+table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:10px;overflow:hidden}
+th{background:#0f1a2b;text-align:left;font-size:11px;letter-spacing:1px;color:var(--dim);padding:8px 10px}
+td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top}
+tr.earned{opacity:.55}
+td .grade{display:inline-flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;font-size:9px;font-weight:800;vertical-align:middle}
+.g-platinum{background:linear-gradient(135deg,#e8eef7,#9fb4cc);color:#0d1521}
+.g-gold{background:linear-gradient(135deg,#ffd24a,#b8860b);color:#3a2a00}
+.g-silver{background:linear-gradient(135deg,#d8e2ee,#93a3b8);color:#222a33}
+.g-bronze{background:linear-gradient(135deg,#d08a4e,#8a5426);color:#33200d}
+td .nm{font-weight:600}
+td .desc{color:var(--dim);font-size:13px}
+td .cat{display:inline-block;font-size:10px;letter-spacing:.5px;color:var(--acc);border:1px solid var(--line);padding:1px 7px;border-radius:10px;margin-left:6px}
+td .miss{display:inline-block;font-size:10px;color:var(--miss);border:1px solid var(--miss);padding:1px 7px;border-radius:10px;margin-left:6px}
+td .gd{color:#c3d2e8;font-size:13px;margin-top:5px}
+td .gd .src{display:block;color:var(--dim);font-size:11px;margin-top:3px}
+td.chk{width:34px}
+td.chk input{width:17px;height:17px;accent-color:var(--ok);cursor:pointer}
+tr.spoiler-blur .nm,tr.spoiler-blur .desc,tr.spoiler-blur .gd{filter:blur(5px);user-select:none;cursor:pointer}
+footer{color:var(--dim);font-size:11px;margin:16px 0;padding-top:10px;border-top:1px solid var(--line)}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--ok);color:#04160e;padding:10px 16px;border-radius:8px;font-weight:600;opacity:0;transition:opacity .3s}
+@media print{body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>LEONIDA LEGEND</h1>
+  <div class="count"><div class="big" id="pct">0%</div><div class="sub" id="cnt">0 / 55 earned</div></div>
+</header>
+<div class="bar"><i id="barfill"></i></div>
+<div class="sub" id="plathint">Bronze 46 · Silver 6 · Gold 2 · Platinum 1 — official list, 2026-11-18</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="controls">
+  <input id="q" type="text" placeholder="Search trophies or guide text...">
+  <select id="catf"><option value="all">All kinds</option><option>story</option><option>activity</option><option>collectible</option><option>stranger</option><option>robbery</option><option>wanted</option><option>combat</option><option>money</option><option>misc</option><option>100%</option><option>platinum</option><option>explore</option></select>
+  <select id="grade"><option value="all">All grades</option><option>platinum</option><option>gold</option><option>silver</option><option>bronze</option></select>
+  <button id="hideE" onclick="toggleHide()">Hide earned</button>
+  <button id="spoil" onclick="toggleSpoil()">Spoilers: OFF</button>
+  <button class="warn" onclick="resetAll()">Reset</button>
+  <button onclick="exportData()">Export</button>
+  <label class="sub" style="align-self:center">Import:</label><input type="file" id="impf" accept="application/json" style="display:none" onchange="importData(this)">
+  <button onclick="document.getElementById('impf').click()">Import file</button>
+</div>
+
+<div class="roadmap">
+  <div class="phase"><h3>PHASE 1</h3><p>Play the story naturally. All 14 story trophies + final mission gold land here.</p></div>
+  <div class="phase"><h3>PHASE 2</h3><p>Strangers &amp; Freaks: finish all strands (Andy, Kenton, Billy, Randy, Tyrone, Bret).</p></div>
+  <div class="phase"><h3>PHASE 3</h3><p>Robberies: 5 vaults, armored truck, jewelry stealth, all 9 gang operations.</p></div>
+  <div class="phase"><h3>PHASE 4</h3><p>Grinds: 250 stunts, 42 gold shooting, 20 races, 14 drone locations, 50 challenges.</p></div>
+  <div class="phase"><h3>PHASE 5</h3><p>Completion: collectibles, garages, spending, laundering — the 100% meter.</p></div>
+</div>
+
+<div class="missbanner">⚠ 1 known missable — <b>Positive Mental Attitude</b> (meditation): at least one meditation spot exists only in Chapter 1. Do the early meditation spots before Chapter 1 ends. Everything else can be mopped up post-story.</div>
+
+<table id="tbl">
+<thead><tr><th class="chk"></th><th>Trophy</th><th class="chk"></th><th>Guide</th></tr></thead>
+<tbody id="tb"></tbody>
+</table>
+
+<footer id="ft"></footer>
+</div>
+<div class="toast" id="toast">Saved</div>
+<script type="module">
+const DATA = await fetch('./data/trophies.json').then(r=>r.json());
+let st = JSON.parse(localStorage.getItem('llprog') || '{}');
+let spoil = localStorage.getItem('llspoil') === '1';
+let hideEarned = localStorage.getItem('llhide') === '1';
+const tb = document.getElementById('tb');
+const toast = document.getElementById('toast');
+function save(){ localStorage.setItem('llprog', JSON.stringify(st)); flash(); }
+function flash(){ toast.style.opacity=1; setTimeout(()=>toast.style.opacity=0, 700); }
+function row(t){
+  const e = st[t.id];
+  const tr = document.createElement('tr');
+  tr.className = (e?'earned ':'') + (spoil && t.hidden && !e ? 'spoiler-blur' : '');
+  tr.dataset.cat = t.category; tr.dataset.grade = t.grade; tr.dataset.earned = e?'1':'';
+  tr.innerHTML = `
+  <td class="chk"><input type="checkbox" ${e?'checked':''} onchange="tog(${t.id},this)"></td>
+  <td><span class="grade g-${t.grade}">${t.grade[0].toUpperCase()}</span>
+      <span class="nm">${t.name}</span>
+      <span class="cat">${t.category}</span>${t.missable?'<span class="miss">MISSABLE</span>':''}
+      <div class="desc">${t.description}</div></td>
+  <td class="chk"><span class="grade g-${t.grade}">${t.grade[0].toUpperCase()}</span></td>
+  <td><div class="gd">${t.guide}<span class="src">${(t.sources||[]).join(' · ')}</span></div></td>`;
+  return tr;
+}
+window.tog = (id, cb)=>{ st[id] = cb.checked; if(!cb.checked) delete st[id]; save(); render(); };
+window.toggleSpoil = ()=>{ spoil=!spoil; localStorage.setItem('llspoil', spoil?'1':'0');
+  document.getElementById('spoil').textContent = 'Spoilers: ' + (spoil?'ON':'OFF');
+  document.getElementById('spoil').classList.toggle('on', spoil); render(); };
+window.toggleHide = ()=>{ hideEarned=!hideEarned; localStorage.setItem('llhide', hideEarned?'1':'0');
+  document.getElementById('hideE').classList.toggle('on', hideEarned); render(); };
+window.resetAll = ()=>{ if(confirm('Clear all progress?')){ st={}; save(); render(); } };
+window.exportData = ()=>{ const blob = new Blob([JSON.stringify({app:'leonida-legend',exported:new Date().toISOString(),progress:st},null,1)], {type:'application/json'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='leonida-legend-progress.json'; a.click(); };
+window.importData = (inp)=>{ const f = inp.files[0]; if(!f) return;
+  const rd = new FileReader(); rd.onload = ()=>{ try{ const d = JSON.parse(rd.result);
+    st = d.progress || {}; save(); render(); }catch(e){ alert('Not a valid Leonida Legend export'); } }; rd.readAsText(f); };
+document.getElementById('spoil').textContent = 'Spoilers: ' + (spoil?'ON':'OFF');
+document.getElementById('spoil').classList.toggle('on', spoil);
+document.getElementById('hideE').classList.toggle('on', hideEarned);
+document.getElementById('q').oninput = render;
+document.getElementById('catf').onchange = render;
+document.getElementById('grade').onchange = render;
+function render(){
+  const q = document.getElementById('q').value.toLowerCase();
+  const cat = document.getElementById('catf').value;
+  const gr = document.getElementById('grade').value;
+  tb.innerHTML = '';
+  for(const t of DATA.trophies){
+    if(cat !== 'all' && t.category !== cat) continue;
+    if(gr !== 'all' && t.grade !== gr) continue;
+    if(hideEarned && st[t.id]) continue;
+    if(q && !(t.name+' '+t.description+' '+t.guide).toLowerCase().includes(q)) continue;
+    tb.appendChild(row(t));
+  }
+  const n = Object.keys(st).length;
+  document.getElementById('pct').textContent = Math.round(n/55*100)+'%';
+  document.getElementById('cnt').textContent = n+' / 55 earned';
+  document.getElementById('barfill').style.width = (n/55*100)+'%';
+  const b = DATA.trophies.filter(t=>st[t.id]&&t.grade==='bronze').length;
+  const s = DATA.trophies.filter(t=>st[t.id]&&t.grade==='silver').length;
+  const g = DATA.trophies.filter(t=>st[t.id]&&t.grade==='gold').length;
+  document.getElementById('stats').innerHTML =
+   `<div class="stat">Platinum <b>${st[1]?'EARNED':'—'}</b></div>
+    <div class="stat">Bronze <b>${b}</b>/46</div><div class="stat">Silver <b>${s}</b>/6</div><div class="stat">Gold <b>${g}</b>/2</div>
+    <div class="stat">Missable done <b>${DATA.trophies.filter(t=>t.missable&&st[t.id]).length}</b>/1</div>`;
+  document.getElementById('ft').textContent = 'Roadmap to the platinum: story → strangers → robberies → activity grinds → 100% completion. Offline guide; progress saved in this browser. Sources cited per trophy.';
+}
+render();
+</script>
+</body>
+</html>
